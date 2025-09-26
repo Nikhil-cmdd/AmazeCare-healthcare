@@ -22,13 +22,13 @@ The goal is to explore full-stack development by building a role-based healthcar
 ---
 
 ## 🛠️ Tech Stack
-### Backend
+### Backend (AmazeCare.zip)
 - Java + Spring Boot  
 - Spring Security + JWT Authentication  
 - RESTful APIs  
-- MySQL Database  
+- MySQL Database (amazecare.sql)
 
-### Frontend
+### Frontend (amazecare-frontend.zip)
 - Angular 20 (Standalone Components)  
 - SCSS Styling  
 - Bootstrap / Tailwind (optional enhancements)
