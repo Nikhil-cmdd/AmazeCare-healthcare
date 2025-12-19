@@ -1,0 +1,340 @@
+.admin-bg {
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background: url('./admin_bg.jpg') center center/cover no-repeat;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.1); // Optional: subtle overlay
+    z-index: 1;
+  }
+}
+
+.dashboard-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem;
+  background: #f8fafc;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+}
+
+// Header
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+  .dashboard-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a237e;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+}
+
+.dashboard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  button {
+    background-color: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.3rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+    &.active, &:hover {
+      background-color: #3949ab;
+    }
+  }
+}
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+// Card style for sections
+.section-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.07);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a237e;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+  }
+  .asset-actions, .filter-select {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+.section-body {
+  width: 100%;
+}
+
+// Table
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 0.7rem;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  th, td {
+    padding: 0.7rem 0.8rem;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1rem;
+    text-align: left;
+  }
+  th {
+    background: #e8eaf6;
+    color: #1a237e;
+    font-weight: 600;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:nth-child(even) {
+    background: #fafafa;
+  }
+}
+
+// Buttons
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.45rem 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  &.btn-primary {
+    background: #1976d2;
+    color: #fff;
+    &:hover {
+      background: #1565c0;
+    }
+  }
+  &.btn-success {
+    background: #4caf50;
+    color: #fff;
+    &:hover {
+      background: #388e3c;
+    }
+  }
+  &.btn-danger {
+    background: #e53935;
+    color: #fff;
+    &:hover {
+      background: #c62828;
+    }
+  }
+  &.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+    &:hover {
+      background: #bdbdbd;
+    }
+  }
+}
+
+// Modal
+.model {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .model-content {
+    background: #fff;
+    padding: 2rem 2rem 1.5rem 2rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    position: relative;
+    h3, h4 {
+      margin-top: 0;
+      color: #1a237e;
+      text-align: center;
+    }
+    .close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+      &:hover {
+        color: #333;
+      }
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      label {
+        font-weight: 500;
+        color: #333;
+      }
+      input, select, textarea {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        &:focus {
+          outline: none;
+          border-color: #1a237e;
+        }
+      }
+      .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+// --- Hospital Form Card ---
+.hospital-form-card {
+  background: #f5f7fa;
+  border-radius: 0.8rem;
+  box-shadow: 0 1px 6px rgba(44, 62, 80, 0.06);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  margin-bottom: 2rem;
+  .form-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a237e;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+.hospital-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.form-row {
+  display: flex;
+  gap: 1.2rem;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+}
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.3rem;
+  }
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    &:focus {
+      outline: none;
+      border-color: #1a237e;
+    }
+  }
+}
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.hospital-name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  color: #283593;
+  i {
+    color: #1976d2;
+    font-size: 1.1rem;
+  }
+}
+.city-badge {
+  display: inline-block;
+  background: #e3eafc;
+  color: #1a237e;
+  font-size: 0.98rem;
+  padding: 0.18rem 0.7rem;
+  border-radius: 0.7rem;
+  font-weight: 500;
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .dashboard-header {
+    .dashboard-title {
+      font-size: 1.3rem;
+    }
+  }
+  .dashboard-main {
+    gap: 1.2rem;
+  }
+  .section-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+  }
+  .model-content {
+    width: 95%;
+    padding: 1rem;
+  }
+  .dashboard-table th, .dashboard-table td {
+    font-size: 0.92rem;
+    padding: 0.5rem 0.5rem;
+  }
+}

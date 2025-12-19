@@ -1,0 +1,149 @@
+<div class="doctor-bg">
+  <div class="dashboard-container">
+    <!-- Header Section -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1 class="dashboard-title">
+          <i class="fas fa-user-md"></i>
+          Doctor Dashboard
+        </h1>
+        <p class="dashboard-subtitle">Welcome back, Dr. {{ doctor.fullName }}</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-number">{{ appointments.length }}</div>
+          <div class="stat-label">Total Appointments</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-grid">
+      <!-- Profile Section -->
+      <section class="profile-section section-card">
+        <div class="section-header">
+          <h3><i class="fas fa-id-card"></i> Your Profile</h3>
+          <button *ngIf="!editMode" class="btn btn-edit" (click)="editMode = true">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+        </div>
+        <div class="section-body">
+          <!-- View Mode -->
+          <div *ngIf="!editMode" class="profile-view">
+            <div class="profile-info">
+              <div class="info-item"><span class="info-label">Full Name:</span> <span class="info-value">{{ doctor.fullName }}</span></div>
+              <div class="info-item"><span class="info-label">Specialty:</span> <span class="info-value">{{ doctor.specialty }}</span></div>
+              <div class="info-item"><span class="info-label">Experience:</span> <span class="info-value">{{ doctor.experience }} years</span></div>
+              <div class="info-item"><span class="info-label">Qualification:</span> <span class="info-value">{{ doctor.qualification }}</span></div>
+              <div class="info-item"><span class="info-label">Designation:</span> <span class="info-value">{{ doctor.designation }}</span></div>
+            </div>
+          </div>
+          <!-- Edit Mode -->
+          <form *ngIf="editMode" (ngSubmit)="updateProfile()" #doctorForm="ngForm" class="profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input class="form-control" [(ngModel)]="doctor.fullName" name="fullName" required />
+              </div>
+              <div class="form-group">
+                <label>Specialty</label>
+                <input class="form-control" [(ngModel)]="doctor.specialty" name="specialty" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Experience (years)</label>
+                <input type="number" class="form-control" [(ngModel)]="doctor.experience" name="experience" />
+              </div>
+              <div class="form-group">
+                <label>Qualification</label>
+                <input class="form-control" [(ngModel)]="doctor.qualification" name="qualification" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Designation</label>
+              <input class="form-control" [(ngModel)]="doctor.designation" name="designation" />
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Save</button>
+              <button class="btn btn-secondary" type="button" (click)="editMode = false"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Appointments Section -->
+      <section class="appointments-section section-card">
+        <div class="section-header">
+          <h3><i class="fas fa-calendar-check"></i> Appointments</h3>
+          <span class="filter-badge">{{ appointments.length }} total</span>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="appointments-table">
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Symptoms</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let appt of appointments">
+                  <td>{{ appt.patientName }}</td>
+                  <td>{{ appt.date }}</td>
+                  <td>{{ appt.time }}</td>
+                  <td>{{ appt.symptoms }}</td>
+                  <td>
+                    <span class="status-badge" [ngClass]="'status-' + appt.status.toLowerCase()">{{ appt.status }}</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-consult" *ngIf="appt.status === 'CONFIRMED'" (click)="prepareConsultation(appt)">
+                      <i class="fas fa-stethoscope"></i> Consult
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Consultation Form Section -->
+      <section class="consultation-section section-card" *ngIf="consultationForm.appointmentId">
+        <div class="section-header">
+          <h3><i class="fas fa-notes-medical"></i> Write Consultation</h3>
+        </div>
+        <div class="section-body">
+          <form (ngSubmit)="submitConsultation()" class="consultation-form">
+            <div class="form-group">
+              <label>Symptoms</label>
+              <textarea class="form-control" [(ngModel)]="consultationForm.symptoms" name="symptoms" required placeholder="Enter patient symptoms..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Physical Exam</label>
+              <textarea class="form-control" [(ngModel)]="consultationForm.physicalExam" name="physicalExam" placeholder="Physical examination findings..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Treatment Plan</label>
+              <textarea class="form-control" [(ngModel)]="consultationForm.treatmentPlan" name="treatmentPlan" placeholder="Recommended treatment plan..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Recommended Tests</label>
+              <textarea class="form-control" [(ngModel)]="consultationForm.recommendedTests" name="recommendedTests" placeholder="Any recommended tests..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Prescription</label>
+              <textarea class="form-control" [(ngModel)]="consultationForm.prescription" name="prescription" placeholder="Medication prescription..."></textarea>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Save Consultation</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+</div> 

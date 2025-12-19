@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Manage Patients</h2>
+
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between">
+      <span>All Patients</span>
+      <button class="btn btn-sm btn-success" (click)="addNewPatient()">Add New</button>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-sm table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>DOB</th>
+            <th>Contact</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of patients">
+            <td>{{ p.fullName }}</td>
+            <td>{{ p.gender }}</td>
+            <td>{{ p.dateOfBirth }}</td>
+            <td>{{ p.contactNumber }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" (click)="editPatient(p)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deletePatient(p.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Form -->
+      <form (ngSubmit)="savePatient()" class="mt-4">
+        <h5>{{ patientForm.id ? 'Edit' : 'Add' }} Patient</h5>
+        <div class="row">
+          <div class="col-md-4">
+            <label>Full Name</label>
+            <input class="form-control" [(ngModel)]="patientForm.fullName" name="name" required />
+          </div>
+          <div class="col-md-4">
+            <label>Gender</label>
+            <select class="form-control" [(ngModel)]="patientForm.gender" name="gender">
+              <option>MALE</option>
+              <option>FEMALE</option>
+              <option>OTHER</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label>Date of Birth</label>
+            <input type="date" class="form-control" [(ngModel)]="patientForm.dateOfBirth" name="dob" />
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label>Contact Number</label>
+            <input class="form-control" [(ngModel)]="patientForm.contactNumber" name="contactNumber" />
+          </div>
+          <div class="col-md-6">
+            <label>Medical History</label>
+            <textarea class="form-control" [(ngModel)]="patientForm.medicalHistory" name="medicalHistory"></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-3">{{ patientForm.id ? 'Update' : 'Add' }}</button>
+      </form>
+    </div>
+  </div>
+</div>

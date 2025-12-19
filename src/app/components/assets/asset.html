@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Manage Assets</h2>
+
+  <form (ngSubmit)="saveAsset()">
+    <div class="row">
+      <div class="col-md-4">
+        <label>Asset Name</label>
+        <input class="form-control" [(ngModel)]="assetForm.name" name="name" required />
+      </div>
+      <div class="col-md-4">
+        <label>Category</label>
+        <input class="form-control" [(ngModel)]="assetForm.category" name="category" />
+      </div>
+      <div class="col-md-4">
+        <label>Quantity</label>
+        <input type="number" class="form-control" [(ngModel)]="assetForm.quantity" name="quantity" required />
+      </div>
+    </div>
+    <button class="btn btn-primary mt-3">{{ editing ? 'Update Asset' : 'Add Asset' }}</button>
+    <button type="button" class="btn btn-secondary mt-3 ms-2" (click)="clearForm()">Clear</button>
+  </form>
+
+  <hr class="my-4" />
+
+  <table class="table table-bordered table-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let asset of assets">
+        <td>{{ asset.name }}</td>
+        <td>{{ asset.category }}</td>
+        <td>{{ asset.quantity }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" (click)="editAsset(asset)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteAsset(asset.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

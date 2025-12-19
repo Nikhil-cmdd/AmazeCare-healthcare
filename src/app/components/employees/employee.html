@@ -1,0 +1,24 @@
+<div class="container mt-4">
+  <h2 class="mb-3">All Employees</h2>
+
+  <table class="table table-bordered table-hover table-striped table-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Designation</th>
+        <th>Department</th>
+        <th>Contact Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of employees">
+        <td>{{ e.id }}</td>
+        <td>{{ e.fullName }}</td>
+        <td>{{ e.designation }}</td>
+        <td>{{ e.department }}</td>
+        <td>{{ e.contactNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

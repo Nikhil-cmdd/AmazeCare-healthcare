@@ -1,0 +1,241 @@
+.dashboard-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: url('./patient_bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  opacity: 0.18;
+}
+// Main container
+.dashboard-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem;
+  background: #f8fafc;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+}
+
+// Header
+.dashboard-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  gap: 2rem;
+
+  .header-content {
+    flex: 1 1 300px;
+  }
+  .dashboard-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .dashboard-subtitle {
+    color: #388e3c;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+  .header-stats {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .stat-card {
+    background: #fff;
+    border-radius: 0.7rem;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    min-width: 120px;
+    .stat-number {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #43a047;
+    }
+    .stat-label {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-top: 0.2rem;
+    }
+  }
+}
+
+// Main grid
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// Card style for sections
+.section-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.07);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #43a047;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+  }
+}
+.section-body {
+  width: 100%;
+}
+
+// Profile section
+.profile-form {
+  .form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    .form-group {
+      flex: 1 1 200px;
+      display: flex;
+      flex-direction: column;
+      label {
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+        color: #2e7d32;
+      }
+      input, select, textarea {
+        border: 1px solid #d1d5db;
+        border-radius: 0.4rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 1rem;
+        background: #f8fafc;
+        transition: border 0.2s;
+        &:focus {
+          border-color: #43a047;
+          outline: none;
+        }
+      }
+    }
+    .full-width {
+      flex-basis: 100%;
+    }
+  }
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+
+// Appointments table
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+.appointments-table, .consultations-table {
+  width: 100%;
+  border-collapse: collapse;
+  th, td {
+    padding: 0.7rem 0.8rem;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 1rem;
+  }
+  th {
+    background: #f1f8e9;
+    font-weight: 600;
+    color: #33691e;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr:hover {
+    background-color: #f4fdf6;
+  }
+}
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  &.status-confirmed {
+    background: #e6f4ea;
+    color: #388e3c;
+  }
+  &.status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+  &.status-cancelled {
+    background: #f8d7da;
+    color: #e53935;
+  }
+}
+
+// Utility
+.filter-badge {
+  background: #e8f5e9;
+  color: #43a047;
+  border-radius: 1rem;
+  padding: 0.2rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+// Buttons
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.45rem 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  &.btn-primary {
+    background: #43a047;
+    color: #fff;
+    &:hover {
+      background: #2e7d32;
+    }
+  }
+  &.btn-success {
+    background: #66bb6a;
+    color: #fff;
+    &:hover {
+      background: #388e3c;
+    }
+  }
+  &.btn-warning {
+    background: #fbc02d;
+    color: #fff;
+    &:hover {
+      background: #f9a825;
+    }
+  }
+  &.btn-danger {
+    background: #e53935;
+    color: #fff;
+    &:hover {
+      background: #c62828;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <h2 class="mb-3">All Appointments</h2>
+
+  <table class="table table-bordered table-sm">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Symptoms</th>
+        <th>Status</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let appt of appointments">
+        <td>{{ appt.patientName }}</td>
+        <td>{{ appt.doctorName }}</td>
+        <td>{{ appt.date }}</td>
+        <td>{{ appt.time }}</td>
+        <td>{{ appt.symptoms }}</td>
+        <td>
+          <select class="form-control form-control-sm" [(ngModel)]="selectedStatus[appt.id]">
+            <option>NEW</option>
+            <option>CONFIRMED</option>
+            <option>COMPLETED</option>
+            <option>CANCELLED</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="updateStatus(appt.id)">Update</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

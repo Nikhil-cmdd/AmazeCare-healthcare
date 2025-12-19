@@ -1,0 +1,473 @@
+<div class="admin-bg">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1 class="dashboard-title"><i class="bi bi-shield-lock"></i> Admin Dashboard</h1>
+      <nav class="dashboard-nav">
+        <button [class.active]="selectedTab === 'doctors'" (click)="selectTab('doctors')">Doctors</button>
+        <button [class.active]="selectedTab === 'patients'" (click)="selectTab('patients')">Patients</button>
+        <button [class.active]="selectedTab === 'employees'" (click)="selectTab('employees')">Employees</button>
+        <button [class.active]="selectedTab === 'hospitals'" (click)="selectTab('hospitals')">Hospitals</button>
+        <button [class.active]="selectedTab === 'appointments'" (click)="selectTab('appointments')">Appointments</button>
+        <button [class.active]="selectedTab === 'assets'" (click)="selectTab('assets')">Assets</button>
+        <button [class.active]="selectedTab === 'assetRequests'" (click)="selectTab('assetRequests')">Asset Requests</button>
+        <button [class.active]="selectedTab === 'consultations'" (click)="selectTab('consultations')">Consultations</button>
+      </nav>
+    </header>
+
+    <main class="dashboard-main">
+      <!-- Doctors Section -->
+      <section *ngIf="selectedTab === 'doctors'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-person-badge"></i> Doctors</h2>
+          <button class="btn btn-success" (click)="openDoctorModel()">+ Add Doctor</button>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Name</th><th>Specialty</th><th>Hospital</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of doctors">
+                  <td>{{ d.id }}</td>
+                  <td>{{ d.fullName }}</td>
+                  <td>{{ d.specialty }}</td>
+                  <td>{{ d.hospital?.name }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editDoctor(d)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deleteDoctor(d.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Doctor Modal -->
+          <div class="model" *ngIf="doctorModelOpen">
+            <div class="model-content">
+              <span class="close" (click)="closeDoctorModel()">&times;</span>
+              <h3>{{ editingDoctor ? 'Edit Doctor' : 'Add Doctor' }}</h3>
+              <form (ngSubmit)="submitDoctorForm()">
+                <label>Full Name:</label>
+                <input type="text" [(ngModel)]="doctorForm.fullName" name="fullName" required />
+                <label>Email:</label>
+                <input type="email" [(ngModel)]="doctorForm.email" name="email" required />
+                <label>Contact Number:</label>
+                <input type="text" [(ngModel)]="doctorForm.contactNumber" name="contactNumber" required />
+                <label>Gender:</label>
+                <select [(ngModel)]="doctorForm.gender" name="gender" required>
+                  <option value="">Select</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="OTHER">Other</option>
+                </select>
+                <label>Specialty:</label>
+                <input type="text" [(ngModel)]="doctorForm.specialty" name="specialty" required />
+                <label>Hospital:</label>
+                <select [(ngModel)]="doctorForm.hospitalId" name="hospitalId" required>
+                  <option *ngFor="let h of hospitals" [value]="h.id">{{ h.name }}</option>
+                </select>
+                <label>Experience (in years):</label>
+                <input type="number" [(ngModel)]="doctorForm.experience" name="experience" required />
+                <label>Qualification:</label>
+                <input type="text" [(ngModel)]="doctorForm.qualification" name="qualification" required />
+                <label>Username:</label>
+                <input type="text" [(ngModel)]="doctorForm.username" name="username" required />
+                <label>Password:</label>
+                <input type="password" [(ngModel)]="doctorForm.password" name="password" [required]="!editingDoctor" placeholder="{{ editingDoctor ? 'Leave blank to keep unchanged' : '' }}" />
+                <button class="btn btn-success" type="submit">{{ editingDoctor ? 'Update' : 'Create' }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Patients Section -->
+      <section *ngIf="selectedTab === 'patients'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-people"></i> Patients</h2>
+          <button class="btn btn-success" (click)="openPatientModel()">+ Add Patient</button>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>ID</th><th>Name</th><th>DOB</th><th>Gender</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of patients">
+                  <td>{{ p.id }}</td>
+                  <td>{{ p.fullName }}</td>
+                  <td>{{ p.dob }}</td>
+                  <td>{{ p.gender }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editPatient(p)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deletePatient(p.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Patient Modal -->
+          <div class="model" *ngIf="patientModelOpen">
+            <div class="model-content">
+              <span class="close" (click)="closePatientModel()">&times;</span>
+              <h3>{{ editingPatient ? 'Edit Patient' : 'Add Patient' }}</h3>
+              <form (ngSubmit)="submitPatientForm()">
+                <label>Full Name:</label>
+                <input type="text" [(ngModel)]="patientForm.fullName" name="fullName" required />
+                <label>Date of Birth:</label>
+                <input type="date" [(ngModel)]="patientForm.dob" name="dob" required />
+                <label>Gender:</label>
+                <select [(ngModel)]="patientForm.gender" name="gender" required>
+                  <option value="">Select</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="OTHER">Other</option>
+                </select>
+                <label>Email:</label>
+                <input type="email" [(ngModel)]="patientForm.email" name="email" required />
+                <label>Contact Number:</label>
+                <input type="text" [(ngModel)]="patientForm.contactNumber" name="contactNumber" required />
+                <label>Username:</label>
+                <input type="text" [(ngModel)]="patientForm.username" name="username" required />
+                <label>Password:</label>
+                <input type="password" [(ngModel)]="patientForm.password" name="password" [required]="!editingPatient" placeholder="{{ editingPatient ? 'Leave blank to keep unchanged' : '' }}" />
+                <label>Medical History:</label>
+                <textarea [(ngModel)]="patientForm.medicalHistory" name="medicalHistory"></textarea>
+                <button class="btn btn-success" type="submit">{{ editingPatient ? 'Update' : 'Create' }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Employees Section -->
+      <section *ngIf="selectedTab === 'employees'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-person-workspace"></i> Employees</h2>
+          <button class="btn btn-success" (click)="openEmployeeModel()">+ Add Employee</button>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>ID</th><th>Name</th><th>Department</th><th>Hospital</th><th>Contact</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of employees">
+                  <td>{{ e.id }}</td>
+                  <td>{{ e.fullName }}</td>
+                  <td>{{ e.department }}</td>
+                  <td>{{ e.hospital?.name }}</td>
+                  <td>{{ e.contactNumber }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editEmployee(e)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deleteEmployee(e.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Employee Modal -->
+          <div class="model" *ngIf="employeeModelOpen">
+            <div class="model-content">
+              <span class="close" (click)="closeEmployeeModel()">&times;</span>
+              <h3>{{ editingEmployee ? 'Edit Employee' : 'Add Employee' }}</h3>
+              <form (ngSubmit)="submitEmployeeForm()">
+                <label>Full Name:</label>
+                <input type="text" [(ngModel)]="employeeForm.fullName" name="fullName" required />
+                <label>Email:</label>
+                <input type="email" [(ngModel)]="employeeForm.email" name="email" required />
+                <label>Contact Number:</label>
+                <input type="text" [(ngModel)]="employeeForm.contactNumber" name="contactNumber" required />
+                <label>Gender:</label>
+                <select [(ngModel)]="employeeForm.gender" name="gender" required>
+                  <option value="">Select</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="OTHER">Other</option>
+                </select>
+                <label>Department:</label>
+                <input type="text" [(ngModel)]="employeeForm.department" name="department" required />
+                <label>Hospital:</label>
+                <select [(ngModel)]="employeeForm.hospitalId" name="hospitalId" required>
+                  <option *ngFor="let h of hospitals" [value]="h.id">{{ h.name }}</option>
+                </select>
+                <label>Username:</label>
+                <input type="text" [(ngModel)]="employeeForm.username" name="username" required />
+                <label>Password:</label>
+                <input type="password" [(ngModel)]="employeeForm.password" name="password" [required]="!editingEmployee" placeholder="{{ editingEmployee ? 'Leave blank to keep unchanged' : '' }}" />
+                <button class="btn btn-success" type="submit">{{ editingEmployee ? 'Update' : 'Create' }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hospitals Section -->
+      <section *ngIf="selectedTab === 'hospitals'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-hospital"></i> Manage Hospitals</h2>
+        </div>
+        <div class="section-body">
+          <form (ngSubmit)="saveHospital()" class="form-inline">
+            <input type="text" placeholder="Hospital Name" [(ngModel)]="hospitalForm.name" name="name" required />
+            <input type="text" placeholder="City" [(ngModel)]="hospitalForm.city" name="city" required />
+            <input type="text" placeholder="Location" [(ngModel)]="hospitalForm.location" name="location" required />
+            <button class="btn btn-success" type="submit">{{ editingHospital ? 'Update' : 'Add' }}</button>
+            <button class="btn btn-secondary" type="button" (click)="openNewHospitalForm()">Reset</button>
+          </form>
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>Name</th><th>City</th><th>Location</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let hospital of hospitals">
+                  <td>{{ hospital.name }}</td>
+                  <td>{{ hospital.city }}</td>
+                  <td>{{ hospital.location }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editHospital(hospital)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deleteHospital(hospital.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appointments Section -->
+      <section *ngIf="selectedTab === 'appointments'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-calendar-check"></i> Appointments</h2>
+          <button class="btn btn-success" (click)="openAppointmentModel()">+ Add Appointment</button>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Symptoms</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of appointments">
+                  <td>{{ a.id }}</td>
+                  <td>{{ a.patientName }}</td>
+                  <td>{{ a.doctorName }}</td>
+                  <td>{{ a.date }}</td>
+                  <td>{{ a.time }}</td>
+                  <td>{{ a.symptoms }}</td>
+                  <td>{{ a.status }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editAppointment(a)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deleteAppointment(a.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Appointment Modal -->
+          <div class="model" *ngIf="appointmentModelOpen">
+            <div class="model-content">
+              <span class="close" (click)="closeAppointmentModel()">&times;</span>
+              <h4>{{ editingAppointment ? 'Edit' : 'New' }} Appointment</h4>
+              <form (ngSubmit)="submitAppointmentForm()">
+                <label>Patient:</label>
+                <select [(ngModel)]="appointmentForm.patientId" name="patientId" required>
+                  <option [value]="''" disabled>Select Patient</option>
+                  <option *ngFor="let patient of patients" [value]="patient.id">{{ patient.fullName }}</option>
+                </select>
+                <label>Doctor:</label>
+                <select [(ngModel)]="appointmentForm.doctorId" name="doctorId" required>
+                  <option [value]="''" disabled>Select Doctor</option>
+                  <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.fullName }}</option>
+                </select>
+                <label>Symptoms:</label>
+                <input type="text" [(ngModel)]="appointmentForm.symptoms" name="symptoms" required>
+                <label>Date:</label>
+                <input type="date" [(ngModel)]="appointmentForm.preferredDate" name="preferredDate" required>
+                <label>Time:</label>
+                <input type="time" [(ngModel)]="appointmentForm.preferredTime" name="preferredTime" required>
+                <label>Status:</label>
+                <select [(ngModel)]="appointmentForm.status" name="status">
+                  <option value="PENDING">Pending</option>
+                  <option value="CONFIRMED">Confirmed</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="CANCELLED">Cancelled</option>
+                </select>
+                <div class="form-actions">
+                  <button class="btn btn-success" type="submit">Save</button>
+                  <button class="btn btn-secondary" type="button" (click)="closeAppointmentModel()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Assets Section -->
+      <section *ngIf="selectedTab === 'assets'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-laptop"></i> Assets</h2>
+          <div class="asset-actions">
+            <select [(ngModel)]="assetFilter" (change)="applyAssetFilter()">
+              <option value="ALL">All Categories</option>
+              <option value="LAPTOP">Laptop</option>
+              <option value="ACCESS_CARD">Access Card</option>
+              <option value="OTHER">Other</option>
+            </select>
+            <button class="btn btn-success" (click)="openAssetModel()">Add Asset</button>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>ID</th><th>Name</th><th>Category</th><th>Status</th><th>Description</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let asset of filteredAssets">
+                  <td>{{ asset.id }}</td>
+                  <td>{{ asset.name }}</td>
+                  <td>{{ asset.category }}</td>
+                  <td>{{ asset.status }}</td>
+                  <td>{{ asset.description }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editAsset(asset)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deleteAsset(asset.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Asset Modal -->
+          <div class="model" *ngIf="assetModelOpen">
+            <div class="model-content">
+              <span class="close" (click)="closeAssetModel()">&times;</span>
+              <h4>{{ editingAsset ? 'Edit Asset' : 'Add Asset' }}</h4>
+              <form (ngSubmit)="submitAssetForm()">
+                <label>Name:</label>
+                <input type="text" [(ngModel)]="assetForm.name" name="name" required />
+                <label>Category:</label>
+                <select [(ngModel)]="assetForm.category" name="category" required>
+                  <option value="LAPTOP">Laptop</option>
+                  <option value="ACCESS_CARD">Access Card</option>
+                  <option value="OTHER">Other</option>
+                </select>
+                <label>Status:</label>
+                <select [(ngModel)]="assetForm.status" name="status" required>
+                  <option value="AVAILABLE">Available</option>
+                  <option value="CANCELLED">Cancelled</option>
+                </select>
+                <label>Description:</label>
+                <input type="text" [(ngModel)]="assetForm.description" name="description" />
+                <div class="form-actions">
+                  <button class="btn btn-success" type="submit">{{ editingAsset ? 'Update' : 'Add' }}</button>
+                  <button class="btn btn-secondary" type="button" (click)="closeAssetModel()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Asset Requests Section -->
+      <section *ngIf="selectedTab === 'assetRequests'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-box-seam"></i> Asset Requests</h2>
+          <select class="filter-select" [(ngModel)]="assetRequestFilter" (change)="applyAssetRequestFilter()">
+            <option value="ALL">All</option>
+            <option value="PENDING">Pending</option>
+            <option value="APPROVED">Approved</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>ID</th><th>Employee</th><th>Asset</th><th>Category</th><th>Status</th><th>Request Date</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let r of filteredAssetRequests">
+                  <td>{{ r.id }}</td>
+                  <td>{{ r.employee?.fullName }}</td>
+                  <td>{{ r.asset?.name }}</td>
+                  <td>{{ r.asset?.category }}</td>
+                  <td>{{ r.status }}</td>
+                  <td>{{ r.requestDate | date: 'mediumDate' }}</td>
+                  <td>
+                    <button *ngIf="r.status !== 'APPROVED'" class="btn btn-success" (click)="approveRequest(r.id)"><i class="bi bi-check-circle"></i> Approve</button>
+                    <button *ngIf="r.status !== 'REJECTED'" class="btn btn-danger" (click)="rejectRequest(r.id)"><i class="bi bi-x-circle"></i> Reject</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Consultations Section -->
+      <section *ngIf="selectedTab === 'consultations'" class="section-card">
+        <div class="section-header">
+          <h2><i class="bi bi-journal-medical"></i> Consultations</h2>
+        </div>
+        <div class="section-body">
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr><th>ID</th><th>Appointment ID</th><th>Patient</th><th>Doctor</th><th>Appointment Date</th><th>Symptoms</th><th>Physical Exam</th><th>Treatment Plan</th><th>Recommended Tests</th><th>Prescription</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let c of consultations">
+                  <td>{{ c.id }}</td>
+                  <td>{{ c.appointmentId }}</td>
+                  <td>{{ c.patientName || 'N/A' }}</td>
+                  <td>{{ c.doctorName || 'N/A' }}</td>
+                  <td>{{ c.appointmentDate ? (c.appointmentDate | date: 'mediumDate') : 'N/A' }}</td>
+                  <td>{{ c.symptoms }}</td>
+                  <td>{{ c.physicalExam || '-' }}</td>
+                  <td>{{ c.treatmentPlan || '-' }}</td>
+                  <td>{{ c.recommendedTests || '-' }}</td>
+                  <td>{{ c.prescription || '-' }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="editConsultation(c)"><i class="bi bi-pencil"></i> Edit</button>
+                    <button class="btn btn-danger" (click)="deleteConsultation(c.id)"><i class="bi bi-trash"></i> Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Consultation Modal -->
+          <div class="model" *ngIf="consultationModelOpen">
+            <div class="model-content">
+              <span class="close" (click)="consultationModelOpen = false">&times;</span>
+              <h3>{{ editingConsultation ? 'Edit Consultation' : 'Add Consultation' }}</h3>
+              <form (ngSubmit)="submitConsultationForm()">
+                <label>Appointment ID:</label>
+                <input type="number" [(ngModel)]="consultationForm.appointmentId" name="appointmentId" required />
+                <label>Symptoms:</label>
+                <input type="text" [(ngModel)]="consultationForm.symptoms" name="symptoms" required />
+                <label>Physical Exam:</label>
+                <textarea [(ngModel)]="consultationForm.physicalExam" name="physicalExam"></textarea>
+                <label>Treatment Plan:</label>
+                <textarea [(ngModel)]="consultationForm.treatmentPlan" name="treatmentPlan"></textarea>
+                <label>Recommended Tests:</label>
+                <textarea [(ngModel)]="consultationForm.recommendedTests" name="recommendedTests"></textarea>
+                <label>Prescription:</label>
+                <textarea [(ngModel)]="consultationForm.prescription" name="prescription"></textarea>
+                <div class="form-actions">
+                  <button class="btn btn-success" type="submit">{{ editingConsultation ? 'Update' : 'Create' }}</button>
+                  <button class="btn btn-secondary" type="button" (click)="consultationModelOpen = false">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
